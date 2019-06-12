@@ -73,6 +73,7 @@ public:
     afx_msg void OnBnClickedNotall();
     afx_msg void OnBnClickedBtnReset();
 
+    void removeCurImgInfo();
 public:
     RAPIDJSON_NAMESPACE::Document m_jsondoc;
     cv::Mat m_src;

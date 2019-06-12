@@ -202,6 +202,13 @@ BOOL CMattingResultUtilityDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+
+    GetDlgItem(IDC_BTN_PRE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_BTN_SET)->EnableWindow(FALSE);
+    GetDlgItem(IDC_BTN_RESET)->EnableWindow(FALSE);
+
+
+
     m_strResPath = "E:\\XiongDi\\portrait_images\\globalmatting+guidedfilter\\";
     m_nCurrentIndex = 0;
     m_bEyeClosedLeft = FALSE;
@@ -232,6 +239,8 @@ BOOL CMattingResultUtilityDlg::OnInitDialog()
         return FALSE;
     }
 
+
+  
     UpdateData(FALSE);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -312,13 +321,20 @@ void CMattingResultUtilityDlg::OnBnClickedBtnNext()
     {
         cv::imshow("res", m_res);
     }
-    
+    GetDlgItem(IDC_BTN_PRE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_BTN_SET)->EnableWindow(TRUE);
+    GetDlgItem(IDC_BTN_RESET)->EnableWindow(FALSE);
+    GetDlgItem(IDC_BTN_NEXT)->EnableWindow(FALSE);
+    m_nResult = 0;
+    UpdateData(FALSE);
 }
 
 
 void CMattingResultUtilityDlg::OnBnClickedBtnPre()
 {
     // TODO: 在此添加控件通知处理程序代码
+    removeCurImgInfo();
+
     USES_CONVERSION;
     m_nCurrentIndex--;
     CStringA strCurDstImg;
@@ -341,7 +357,11 @@ void CMattingResultUtilityDlg::OnBnClickedBtnPre()
     {
         cv::imshow("res", m_res);
     }
-    
+
+    GetDlgItem(IDC_BTN_PRE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_BTN_SET)->EnableWindow(TRUE);
+    GetDlgItem(IDC_BTN_RESET)->EnableWindow(FALSE);
+    GetDlgItem(IDC_BTN_NEXT)->EnableWindow(FALSE);
 }
 
 
@@ -709,6 +729,12 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
     CString str;
     str.Format(L"%d/%d", m_nUsable, m_nTotal);
     GetDlgItem(IDC_S_ALL)->SetWindowTextW(str);
+
+    GetDlgItem(IDC_BTN_PRE)->EnableWindow(TRUE);
+    GetDlgItem(IDC_BTN_SET)->EnableWindow(FALSE);
+    GetDlgItem(IDC_BTN_RESET)->EnableWindow(TRUE);
+    GetDlgItem(IDC_BTN_NEXT)->EnableWindow(TRUE);
+
     UpdateData(FALSE);
 
     //RAPIDJSON_NAMESPACE::StringBuffer buffer;
@@ -851,6 +877,16 @@ void CMattingResultUtilityDlg::OnBnClickedNotall()
 void CMattingResultUtilityDlg::OnBnClickedBtnReset()
 {
     // TODO: 在此添加控件通知处理程序代码
+    removeCurImgInfo();
+
+    GetDlgItem(IDC_BTN_PRE)->EnableWindow(TRUE);
+    GetDlgItem(IDC_BTN_SET)->EnableWindow(TRUE);
+    GetDlgItem(IDC_BTN_RESET)->EnableWindow(FALSE);
+    GetDlgItem(IDC_BTN_NEXT)->EnableWindow(FALSE);
+}
+
+void CMattingResultUtilityDlg::removeCurImgInfo()
+{
     switch (m_nResult)
     {
     case 0:
@@ -901,5 +937,4 @@ void CMattingResultUtilityDlg::OnBnClickedBtnReset()
     removestring(m_str51, strCurIndex);
     removestring(m_str60, strCurIndex);
     removestring(m_str61, strCurIndex);
-
 }
