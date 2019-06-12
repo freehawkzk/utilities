@@ -5,6 +5,7 @@
 #pragma once
 #include "document.h"
 #include "opencv2/core.hpp"
+#include <string>
 // CMattingResultUtilityDlg ¶Ô»°¿ò
 class CMattingResultUtilityDlg : public CDialogEx
 {
@@ -76,4 +77,22 @@ public:
     RAPIDJSON_NAMESPACE::Document m_jsondoc;
     cv::Mat m_src;
     cv::Mat m_res;
+    std::string m_str00;
+    std::string m_str01;
+    std::string m_str02;
+    std::string m_str03;
+    std::string m_str04;
+    std::string m_str05;
+    std::string m_str10;
+    std::string m_str11;
+    std::string m_str20;
+    std::string m_str21;
+    std::string m_str30;
+    std::string m_str31;
+    std::string m_str40;
+    std::string m_str41;
+    std::string m_str50;
+    std::string m_str51;
+    std::string m_str60;
+    std::string m_str61;
 };

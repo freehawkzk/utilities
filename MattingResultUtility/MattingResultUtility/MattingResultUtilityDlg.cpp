@@ -16,10 +16,53 @@
 #include "prettywriter.h"
 #include "stringbuffer.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+//#ifdef _DEBUG
+//#define new DEBUG_NEW
+//#endif
 
+void appendstring(std::string& str0, std::string& str1)
+{
+    if (str1.length() != 0)
+    {
+        if (str1[0] != ' ')
+        {
+            std::string temp = " " + str1;
+            str1 = temp;
+        }
+        if (str1[str1.length() - 1] != ' ')
+        {
+            std::string temp = str1 + " ";
+            str1 = temp;
+        }
+    }
+    if (str0.find(str1) == std::string::npos)
+    {
+        str0 = str0 + str1;
+    }
+}
+
+void removestring(std::string& str0, std::string& str1)
+{
+    if (str1.length() != 0)
+    {
+        if (str1[0] != ' ')
+        {
+            std::string temp = " " + str1;
+            str1 = temp;
+        }
+        if (str1[str1.length() - 1] != ' ')
+        {
+            std::string temp = str1 + " ";
+            str1 = temp;
+        }
+    }
+
+    std::string::size_type pos = str0.find(str1);
+    if (pos != std::string::npos)
+    {
+        str0.replace(pos, str1.length(), "");
+    }
+}
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
@@ -315,9 +358,70 @@ void CMattingResultUtilityDlg::OnClose()
     std::ofstream of("./datas/infos.json");
     of << sinfo << std::endl;
     of.close();
+
+    std::ofstream of00("./datas/0-0-usable.tags");
+    std::ofstream of01("./datas/0-1-srcunqualify.tags");
+    std::ofstream of02("./datas/0-2-algorithmerror.tags");
+    std::ofstream of03("./datas/0-3-foreignmatter.tags");
+    std::ofstream of04("./datas/0-4-toomuch.tags");
+    std::ofstream of05("./datas/0-5-notall.tags");
+    std::ofstream of10("./datas/1-0-lefteyeclosed.tags");
+    std::ofstream of11("./datas/1-1-lefteyeopen.tags");
+    std::ofstream of20("./datas/2-0-righteyeclosed.tags");
+    std::ofstream of21("./datas/2-1-righteyeopen.tags");
+    std::ofstream of30("./datas/3-0-lefteyeblowcovered.tags");
+    std::ofstream of31("./datas/3-1-lefteyeblowuncovered.tags");
+    std::ofstream of40("./datas/4-0-righteyeblowcovered.tags");
+    std::ofstream of41("./datas/4-1-righteyeblowuncovered.tags");
+    std::ofstream of50("./datas/5-0-mouthclosed.tags");
+    std::ofstream of51("./datas/5-1-mouthopen.tags");
+    std::ofstream of60("./datas/6-0-eardropexist.tags");
+    std::ofstream of61("./datas/6-1-eardropnotexist.tags");
+
+    of00 << m_str00 << std::endl;
+    of01 << m_str01 << std::endl;
+    of02 << m_str02 << std::endl;
+    of03 << m_str03 << std::endl;
+    of04 << m_str04 << std::endl;
+    of05 << m_str05 << std::endl;
+    of10 << m_str10 << std::endl;
+    of11 << m_str11 << std::endl;
+    of20 << m_str20 << std::endl;
+    of21 << m_str21 << std::endl;
+    of30 << m_str30 << std::endl;
+    of31 << m_str31 << std::endl;
+    of40 << m_str40 << std::endl;
+    of41 << m_str41 << std::endl;
+    of50 << m_str50 << std::endl;
+    of51 << m_str51 << std::endl;
+    of60 << m_str60 << std::endl;
+    of61 << m_str61 << std::endl;
+
+    of00.close();
+    of01.close();
+    of02.close();
+    of03.close();
+    of04.close();
+    of05.close();
+    of10.close();
+    of11.close();
+    of20.close();
+    of21.close();
+    of30.close();
+    of31.close();
+    of40.close();
+    of41.close();
+    of50.close();
+    of51.close();
+    of60.close();
+    of61.close();
+
+    m_src = cv::Mat();
+    m_res = cv::Mat();
     cv::destroyAllWindows();
     CDialogEx::OnClose();
 }
+
 
 
 void CMattingResultUtilityDlg::OnBnClickedBtnSet()
@@ -332,6 +436,11 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
     CStringA resImgPath; resImgPath.Format("%d-dst.jpg", m_nCurrentIndex); resImgPath = W2A(m_strResPath) + resImgPath;
     CStringA dstsrcImgPath;
     CStringA dstresImgPath;
+    std::string strCurIndex;
+    std::stringstream ss;
+    ss << " "<<m_nCurrentIndex<<" ";
+    ss >> strCurIndex;
+    ss.clear();
     if (m_bEyeClosedLeft)
     {
         if (m_jsondoc.HasMember("lefteyeclosed"))
@@ -342,6 +451,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str10, strCurIndex);
         dstsrcImgPath.Format("./datas/lefteyeclosed/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/lefteyeclosed/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -357,6 +467,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str11, strCurIndex);
         dstsrcImgPath.Format("./datas/lefteyeopen/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/lefteyeopen/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -373,6 +484,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str20, strCurIndex);
         dstsrcImgPath.Format("./datas/righteyeclosed/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/righteyeclosed/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -388,6 +500,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str21, strCurIndex);
         dstsrcImgPath.Format("./datas/righteyeopen/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/righteyeopen/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -404,6 +517,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str31, strCurIndex);
         dstsrcImgPath.Format("./datas/lefteyeblowuncovered/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/lefteyeblowuncovered/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -419,6 +533,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str30, strCurIndex);
         dstsrcImgPath.Format("./datas/lefteyeblowcovered/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/lefteyeblowcovered/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -435,6 +550,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str41, strCurIndex);
         dstsrcImgPath.Format("./datas/righteyeblowuncovered/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/righteyeblowuncovered/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -450,6 +566,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str40, strCurIndex);
         dstsrcImgPath.Format("./datas/righteyeblowcovered/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/righteyeblowcovered/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -466,6 +583,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str51, strCurIndex);
         dstsrcImgPath.Format("./datas/mouthopen/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/mouthopen/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -481,6 +599,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str50, strCurIndex);
         dstsrcImgPath.Format("./datas/mouthclosed/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/mouthclosed/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -497,6 +616,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str60, strCurIndex);
         dstsrcImgPath.Format("./datas/eardropexist/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/eardropexist/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -512,6 +632,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
                 v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
             }
         }
+        appendstring(m_str61, strCurIndex);
         dstsrcImgPath.Format("./datas/eardropnotexist/%d-src.jpg", m_nCurrentIndex);
         dstresImgPath.Format("./datas/eardropnotexist/%d-dst.jpg", m_nCurrentIndex);
         cv::imwrite(dstsrcImgPath.GetBuffer(dstsrcImgPath.GetLength()), m_src); dstsrcImgPath.ReleaseBuffer();
@@ -523,6 +644,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
     case 0:
     {
         m_nUsable++;
+        appendstring(m_str00, strCurIndex);
         RAPIDJSON_NAMESPACE::Value& v = m_jsondoc["usable"];
         v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
         dstsrcImgPath.Format("./datas/0-0-usable/%d-src.jpg", m_nCurrentIndex);
@@ -532,6 +654,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
     case 1:
     {
         m_nSrcNotQualify++;
+        appendstring(m_str01, strCurIndex);
         RAPIDJSON_NAMESPACE::Value& v = m_jsondoc["srcunqualify"];
         v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
         dstsrcImgPath.Format("./datas/0-1-srcunqualify/%d-src.jpg", m_nCurrentIndex);
@@ -541,6 +664,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
     case 2:
     {
         m_nAlgorithmError++;
+        appendstring(m_str02, strCurIndex);
         RAPIDJSON_NAMESPACE::Value& v = m_jsondoc["algorithmerror"];
         v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
         dstsrcImgPath.Format("./datas/0-2-algorithmerror/%d-src.jpg", m_nCurrentIndex);
@@ -550,6 +674,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
     case 3:
     {
         m_nForeignMatter++;
+        appendstring(m_str03, strCurIndex);
         RAPIDJSON_NAMESPACE::Value& v = m_jsondoc["foreignmatter"];
         v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
         dstsrcImgPath.Format("./datas/0-3-foreignmatter/%d-src.jpg", m_nCurrentIndex);
@@ -559,6 +684,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
     case 4:
     {
         m_nTooMuch++;
+        appendstring(m_str04, strCurIndex);
         RAPIDJSON_NAMESPACE::Value& v = m_jsondoc["toomuch"];
         v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
         dstsrcImgPath.Format("./datas/0-4-toomuch/%d-src.jpg", m_nCurrentIndex);
@@ -568,6 +694,7 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
     case 5:
     {
         m_nNotAll++;
+        appendstring(m_str05, strCurIndex);
         RAPIDJSON_NAMESPACE::Value& v = m_jsondoc["notall"];
         v.PushBack(m_nCurrentIndex, m_jsondoc.GetAllocator());
         dstsrcImgPath.Format("./datas/0-5-notall/%d-src.jpg", m_nCurrentIndex);
@@ -750,4 +877,29 @@ void CMattingResultUtilityDlg::OnBnClickedBtnReset()
     str.Format(L"%d/%d", m_nUsable, m_nTotal);
     GetDlgItem(IDC_S_ALL)->SetWindowTextW(str);
     UpdateData(FALSE);
+
+    std::string strCurIndex;
+    std::stringstream ss;
+    ss << " " << m_nCurrentIndex << " ";
+    ss >> strCurIndex;
+    ss.clear();
+    removestring(m_str00, strCurIndex);
+    removestring(m_str01, strCurIndex);
+    removestring(m_str02, strCurIndex);
+    removestring(m_str03, strCurIndex);
+    removestring(m_str04, strCurIndex);
+    removestring(m_str05, strCurIndex);
+    removestring(m_str10, strCurIndex);
+    removestring(m_str11, strCurIndex);
+    removestring(m_str20, strCurIndex);
+    removestring(m_str21, strCurIndex);
+    removestring(m_str30, strCurIndex);
+    removestring(m_str31, strCurIndex);
+    removestring(m_str40, strCurIndex);
+    removestring(m_str41, strCurIndex);
+    removestring(m_str50, strCurIndex);
+    removestring(m_str51, strCurIndex);
+    removestring(m_str60, strCurIndex);
+    removestring(m_str61, strCurIndex);
+
 }
