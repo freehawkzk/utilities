@@ -176,7 +176,8 @@ BOOL CMattingResultUtilityDlg::OnInitDialog()
     if (!in.is_open())
         return FALSE;
     std::string line;
-    while (getline(in, line)) {
+    while (getline(in, line)) 
+    {
         stringFromStream.append(line + "\n");
     }
     in.close();
@@ -583,71 +584,14 @@ void CMattingResultUtilityDlg::OnBnClickedBtnSet()
     GetDlgItem(IDC_S_ALL)->SetWindowTextW(str);
     UpdateData(FALSE);
 
-    RAPIDJSON_NAMESPACE::StringBuffer buffer;
-    RAPIDJSON_NAMESPACE::PrettyWriter<RAPIDJSON_NAMESPACE::StringBuffer> writer(buffer);
-    m_jsondoc.Accept(writer);
-    std::string sinfo = buffer.GetString();
-    std::ofstream of("./datas/infos.json");
-    of << sinfo << std::endl;
-    of.close();
-
-    //RAPIDJSON_NAMESPACE::Document doc;
-    //doc.SetObject();
-
-    //std::string s;
-    //std::stringstream ostr;
-    //ostr <<"./datas/"<< m_nCurrentIndex << ".json" << std::endl;
-    //ostr >> s;
-    //ostr.clear();
-    //ostr.str("");
-
-    //doc.AddMember("name", m_nCurrentIndex, doc.GetAllocator());
-    //doc.AddMember("eyeclosedleft", m_bEyeClosedLeft, doc.GetAllocator());
-    //doc.AddMember("eyeclosedright", m_bEyeClosedRight, doc.GetAllocator());
-    //doc.AddMember("eyeblowuncoveredleft", m_bEyeBlowUncoveredLeft, doc.GetAllocator());
-    //doc.AddMember("eyeblowuncoveredright", m_bEyeBlowUncoveredRight, doc.GetAllocator());
-    //doc.AddMember("haveeardrop", m_bHaveEarDrop, doc.GetAllocator());
-    //doc.AddMember("mouthopen", m_bMouthOpen, doc.GetAllocator());
-    //doc.AddMember("usable", m_nResult, doc.GetAllocator());
-
-    //
     //RAPIDJSON_NAMESPACE::StringBuffer buffer;
     //RAPIDJSON_NAMESPACE::PrettyWriter<RAPIDJSON_NAMESPACE::StringBuffer> writer(buffer);
-    //doc.Accept(writer);
-
- 
+    //m_jsondoc.Accept(writer);
     //std::string sinfo = buffer.GetString();
-
-    //std::ofstream of(s);
+    //std::ofstream of("./datas/infos.json");
     //of << sinfo << std::endl;
     //of.close();
-
-    //switch (m_nResult)
-    //{
-    //case 0:
-    //    m_nUsable++;
-    //    break;
-    //case 1:
-    //    m_nSrcNotQualify++;
-    //    break;
-    //case 2:
-    //    m_nAlgorithmError++;
-    //    break;
-    //case 3:
-    //    m_nForeignMatter++;
-    //    break;
-    //case 4:
-    //    m_nTooMuch++;
-    //    break;
-    //case 5:
-    //    m_nNotAll++;
-    //    break;
-    //}
-    //m_nTotal++;
-    //CString str;
-    //str.Format(L"%d/%d", m_nUsable, m_nTotal);
-    //GetDlgItem(IDC_S_ALL)->SetWindowTextW(str);
-    //UpdateData(FALSE);
+    
 }
 
 
