@@ -20,4 +20,7 @@ dir = dir.replace("\\",'/')
 
 dll = ctypes.cdll.LoadLibrary( 'FaceVerificationDllx.dll' )
 nRst = dll.GetFaceFeature(("E:/XiongDi/PMDataset/humans/1/1-1.bmp").encode()  , ("32223").encode())
+fs=0
+nRst = dll.MatchScoreFeatureByImage(("32223.bits").encode(),("E:/XiongDi/PMDataset/humans/1/1-1.bmp").encode()  ,fs )
+print (nRst,fs)
 

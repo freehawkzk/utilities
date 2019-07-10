@@ -18,10 +18,12 @@ dir = dir.replace("\\\\",'/')
 dir = dir.replace("\\",'/')
 
 
-for index in range(1,140):
+for index in range(1,141):
     dir1=dir+"/"+str(index)+"/"
     filenames = os.listdir(dir1)
     j=0
+    f3=dir+"/"+str(index)+".txt"
+    f = open(f3, 'w+')
     for file in filenames:
         file = dir1+file
         print(file)
@@ -29,3 +31,5 @@ for index in range(1,140):
         j = j+1
         print (f2)
         shutil.move(file,f2)
+    f.write(str(j))
+    f.close()
