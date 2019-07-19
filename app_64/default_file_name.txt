@@ -1,0 +1,1 @@
+default_file_name.txt|5|0.0286921|
