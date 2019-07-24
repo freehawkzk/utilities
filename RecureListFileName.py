@@ -16,6 +16,8 @@ if(len(sys.argv) <= 2):
 else:
     savefilename = sys.argv[2]
 
+dir = dir.replace("\\\\",'/')
+dir = dir.replace("\\",'/')
 path = dir #文件夹目录
 datas = []
 
@@ -29,10 +31,14 @@ def eachFile(filepath):
             f = open(savefilename, 'a+')
             print(newDir)
             if os.path.splitext(file)[-1] == ".jpg" or os.path.splitext(file)[-1] == ".png":
+                newDir = newDir.replace("\\\\", '/')
+                newDir = newDir.replace("\\", '/')
                 datas.append(newDir)
                 f.write(newDir)
                 f.write("\n")
                 f.flush()
+            elif os.path.splitext(file)[-1] == ".feat" :
+                os.remove(newDir)
             f.close()
         else:
             eachFile(newDir)                #如果不是文件，递归这个文件夹的路径
