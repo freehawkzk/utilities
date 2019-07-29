@@ -30,7 +30,7 @@ def eachFile(filepath):
         if os.path.isfile(newDir):  # 如果是文件
             f = open(savefilename, 'a+')
             print(newDir)
-            if os.path.splitext(file)[-1] == ".jpg" or os.path.splitext(file)[-1] == ".png":
+            if os.path.splitext(file)[-1] == ".jpg" or os.path.splitext(file)[-1] == ".png"or os.path.splitext(file)[-1] == ".bmp":
                 newDir = newDir.replace("\\\\", '/')
                 newDir = newDir.replace("\\", '/')
                 datas.append(newDir)
