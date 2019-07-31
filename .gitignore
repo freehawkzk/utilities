@@ -25,6 +25,8 @@ bld/
 [Oo]bj/
 [Ll]og/
 *.json
+shape_predictor_68_face_landmarks.dat
+shape_predictor_5_face_landmarks.dat
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
