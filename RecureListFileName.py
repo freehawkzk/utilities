@@ -18,10 +18,12 @@ else:
 
 dir = dir.replace("\\\\",'/')
 dir = dir.replace("\\",'/')
+if dir.endswith('/'):
+    dir = dir[:-1]
 path = dir #文件夹目录
 datas = []
 
-def eachFile(filepath):
+def ListPath(filepath):
     fileNames = os.listdir(filepath)  # 获取当前路径下的文件名，返回List
     for file in fileNames:
         newDir = filepath + '/' + file # 将文件命加入到当前文件路径后面
@@ -29,22 +31,21 @@ def eachFile(filepath):
         # if os.path.isdir(newDir): # 如果是文件夹
         if os.path.isfile(newDir):  # 如果是文件
             f = open(savefilename, 'a+')
-            print(newDir)
+            #print(newDir)
             if os.path.splitext(file)[-1] == ".jpg" or os.path.splitext(file)[-1] == ".png"or os.path.splitext(file)[-1] == ".bmp":
                 newDir = newDir.replace("\\\\", '/')
                 newDir = newDir.replace("\\", '/')
                 datas.append(newDir)
                 f.write(newDir)
                 f.write("\n")
-                f.flush()
+                #f.flush()
             elif os.path.splitext(file)[-1] == ".feat" :
                 os.remove(newDir)
             f.close()
         else:
-            eachFile(newDir)                #如果不是文件，递归这个文件夹的路径
+            ListPath(newDir)                #如果不是文件，递归这个文件夹的路径
 
 
 
 if __name__ == "__main__":
-    eachFile(path)
-    print(datas)
+    ListPath(path)
