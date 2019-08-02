@@ -5,7 +5,7 @@ import os
 
 import os
 import sys
-
+import threading
 dir=[]
 if(len(sys.argv) == 1):
     print("You dont input the folder path that you want to list file name, dir will be default to ./!\n")
@@ -13,7 +13,10 @@ if(len(sys.argv) == 1):
 else:
     dir=sys.argv[1]
 
+savefilename=sys.argv[2]
+
 detector = dlib.get_frontal_face_detector()
+filenames=[]
 
 def DetectFace(imgpath):
     #print(imgpath)
@@ -36,22 +39,56 @@ def ReadImgFileList(imglistfilepath):
             lines.append(line)
     return lines
 
+def GetAFileName(filenames):
+    threadLock.acquire()
+    if len(filenames)>0:
+        fn = filenames[0]
+        del filenames[0]
+        threadLock.release()
+        return fn
+    threadLock.release()
+    return None
+
+def ThreadFunc(filenames,f):
+    filename = GetAFileName(filenames)
+
+    if filename != None:
+        if not DetectFace(filename) :
+            #os.remove(file)
+            print("remove "+filename)
+            f.write(filename)
+            f.write("\n")
+            f.flush()
+
+
+class facedetectthread(threading.Thread):
+    def __init__(self, filenames, f):
+        threading.Thread.__init__(self)
+        self.filenames = filenames
+        self.f = f
+    def run(self):                   #把要执行的代码写到run函数里面 线程在创建后会直接运行run函数 
+        ThreadFunc(filenames,f)
+
+
 dir = dir.replace("\\\\",'/')
 dir = dir.replace("\\",'/')
-savefilename="removedimglist.txt"
+
 f = open(savefilename, 'a+')
 filenames=ReadImgFileList(dir)
-for file in filenames:
-    #print(file)
-    if not DetectFace(file) :
-        #os.remove(file)
-        print("remove "+file)
-
-        f.write(file)
-        f.write("\n")
-        f.flush()
-    #else:
-        #print(file)
+threadLock = threading.Lock()
+threads = []
+while len(filenames) > 0 :
+    if len(threads) < 8:
+        func = facedetectthread(filenames,f)
+        func.start()
+        threads.append(func)
+    else:
+        for t in threads:
+            t.join()
+            threads.remove(t)
+            break
+for t in threads:
+    t.join()
 f.close()
 
 
