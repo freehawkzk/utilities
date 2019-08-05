@@ -13,7 +13,7 @@ def RemoveFileInList(filelist):
     """
     # 遍历文件名，
     for file in filelist:
-        if(os.path.isfile(file)):
+        if(os.path.exists(file) and os.path.isfile(file)):
             os.remove(file)# 删除文件
             print("remove "+file)
             ppath = os.path.dirname(file)

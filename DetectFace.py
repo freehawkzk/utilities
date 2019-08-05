@@ -36,6 +36,18 @@ def DetectFace(imgpath):
     dets = detector(gray, 1) # dlib进行人脸检测
     return len(dets)==1 # 图片中有且仅有一张人脸
 
+def DetectFace1(imgpath):
+    """
+        对输入imgpath图像进行人脸检测，当图片中有且仅有1张人脸时，
+    返回True,否则返回False.
+    """
+    img = cv2.imread(imgpath) # 图片读取
+    if(img is None):
+        return False
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    dets = detector(gray, 1) # dlib进行人脸检测
+    return dets 
+
 def ReadImgFileList(imglistfilepath):
     """
         读取文件列表文件的内容，按行存储为list，并返回该list
@@ -73,13 +85,13 @@ def ThreadFunc(filenames,f):
     filename = GetAFileName(filenames)
     esptime = time.clock()-starttime
     processedimg = totalnum - len(filenames)
-    if processedimg % 100 == 0:
-        print(str(processedimg)  + " average time : "+str(esptime/processedimg))
+    if processedimg % 10 == 0:
+        print(str(processedimg)  + " average time : "+str(esptime/processedimg)+" "+str(processedimg/totalnum*100)+'%')
     if filename != None:
-        if not DetectFace(filename) :
-            #os.remove(file)
-            #print("remove "+filename)
-            f.write(filename)
+        dets = DetectFace1(filename)
+        for index, d in enumerate(dets):
+            info="{} {} L: {} T: {} R: {} B: {}".format(filename,index, d.left(), d.top(), d.right(), d.bottom())
+            f.write(info)
             f.write("\n")
             f.flush()
 
