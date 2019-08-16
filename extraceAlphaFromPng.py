@@ -11,7 +11,7 @@ for file in imgs:
     f = os.path.abspath(file)
     f=f.replace("\\",'/')
     s=f.split('/')
-    s[3]="alpha"
+    s[3]="mask"
     dir = s[0:-1]
     d=s[0]+'/'
     for do in dir[1:]:
@@ -20,7 +20,8 @@ for file in imgs:
         os.makedirs(d)
     img = cv2.imread(file,cv2.IMREAD_UNCHANGED)
     b,g,r,alpha = cv2.split(img)
-    cv2.imwrite(d+s[-1],alpha)
+    rt ,mask = cv2.threshold(alpha,125,255,cv2.THRESH_BINARY)
+    cv2.imwrite(d+s[-1],mask)
     print(file)
 
     
