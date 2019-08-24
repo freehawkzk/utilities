@@ -88,10 +88,14 @@ def ThreadFunc(filenames,f):
     if processedimg % 10 == 0:
         print(str(processedimg)  + " average time : "+str(esptime/processedimg)+" "+str(processedimg/totalnum*100)+'%')
     if filename != None:
-        dets = DetectFace1(filename)
-        for index, d in enumerate(dets):
-            info="{} {} L: {} T: {} R: {} B: {}".format(filename,index, d.left(), d.top(), d.right(), d.bottom())
-            f.write(info)
+        #dets = DetectFace1(filename)
+        #for index, d in enumerate(dets):
+        #    info="{} {} L: {} T: {} R: {} B: {}".format(filename,index, d.left(), d.top(), d.right(), d.bottom())
+        #    f.write(info)
+        #    f.write("\n")
+        #    f.flush()
+        if not DetectFace(filename):
+            f.write(filename)
             f.write("\n")
             f.flush()
 
