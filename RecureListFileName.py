@@ -39,6 +39,7 @@ def ListPath(filepath):
                 f.write(newDir)
                 f.write("\n")
                 #f.flush()
+                print(newDir)
             elif os.path.splitext(file)[-1] == ".feat" :
                 os.remove(newDir)
             f.close()
