@@ -1,3 +1,6 @@
+'''
+在指定文件中，查找'int g_VersionLL ='字符串，并修改随后的数字版本号
+'''
 import os
 import sys
 import chardet
@@ -17,23 +20,22 @@ def ReadImgFileList(imglistfilepath,encoding):
     return lines
 
 def AddVersionNum(filepath,encoding):
+    '''
+        在指定文件中，查找'int g_VersionLL ='字符串，并修改随后的数字版本号
+    '''
     lines = ReadImgFileList(filepath,encoding)
     newlines=[]
     for line in lines:
         l = line[:line.rfind(' ')]
         if l=='int g_VersionLL =':
             curr = int(line[line.rfind(' '):-1])
-            #print(curr)
-            #print(l)
             curr = curr+1
-            #print(l+' '+str(curr)+';')
             line = l+' '+str(curr)+';'
         newlines.append(line)
     f = open(filepath, 'w+',encoding=encoding)
     for line in newlines:
         f.write(line)
         f.write('\n')
-        #print(line)
     f.close()
 
 if __name__ == "__main__":
