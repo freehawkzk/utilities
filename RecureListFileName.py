@@ -31,6 +31,7 @@ def ListPath(filepath):
         # if os.path.isdir(newDir): # 如果是文件夹
         if os.path.isfile(newDir):  # 如果是文件
             f = open(savefilename, 'a+')
+
             #print(newDir)
             if os.path.splitext(file)[-1] == ".jpg" or os.path.splitext(file)[-1] == ".png"or os.path.splitext(file)[-1] == ".bmp":
                 newDir = newDir.replace("\\\\", '/')
@@ -38,10 +39,11 @@ def ListPath(filepath):
                 datas.append(newDir)
                 f.write(newDir)
                 f.write("\n")
-                #f.flush()
+                print(newDir)
             elif os.path.splitext(file)[-1] == ".feat" :
                 os.remove(newDir)
             f.close()
+
         else:
             ListPath(newDir)                #如果不是文件，递归这个文件夹的路径
 

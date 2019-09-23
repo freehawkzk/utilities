@@ -1,0 +1,1 @@
+python e:/XiongDi/utilities/CleanVSTempFiles.py e:/XiongDi/
